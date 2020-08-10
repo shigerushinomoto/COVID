@@ -22,7 +22,13 @@
     <br> 
     <div class="row">
       <div class="pb-1">
-        <button type="button" class="btn btn-success" @click="fillData()">estimation</button>
+        <div id="estimate" v-if="est_normal">
+          <button type="button" class="btn btn-success" @click="exeEstimate()">estimate</button>
+        </div>
+        <div v-else>
+          <button type="button" class="btn btn-secondary" @click="exeEstimate()">estimating</button>
+          <span class='spinner-border spinner-border-sm'></span>
+        </div>
       </div>
     </div>
     <br>
@@ -66,12 +72,93 @@ export default {
         height2: 200,
         N: 1000,
         gm: 0.001,
+        est_normal: true,
       }
     },
     mounted () {
-      this.fillData()
+      this.initChart()
     },
     methods: {
+      initChart() {
+        let inputNumData = this.inputData.split(/,|\s/).filter(function(v){return v!=""}).map(Number)
+        this.labelData = []
+        for (let i=0; i<inputNumData.length; i++) this.labelData.push(i)
+        this.chartData1 = {
+          labels: this.labelData,
+          datasets: [
+          {
+            label: 'original data',
+            showLine: true,
+            borderColor: 'rgba(60, 220, 150, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          },
+          {
+            label: 'adjusted data',
+            showLine: true,
+            borderColor: 'rgba(250, 20, 30, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          },
+          {
+            label: 'estimated data',
+            showLine: true,
+            borderColor: 'rgba(30, 220, 250, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          }]
+        }
+        this.chartData2 = {
+          labels: this.labelData,
+          datasets: [
+          {
+            label: 'estimated R',
+            showLine: true,
+            borderColor: 'rgba(60, 220, 150, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          },
+          {
+            label: '2.5',
+            showLine: true,
+            borderColor: 'rgba(250, 20, 30, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          },
+          {
+            label: '97.5',
+            showLine: true,
+            borderColor: 'rgba(30, 220, 250, 0.8)',
+            lineTension: 0,
+            pointRadius: 0,
+            fill: false,
+            type: "scatter"
+          }]
+        }
+      },
+      async exeEstimate() {
+        await this.changeEstBtn(this.est_normal)
+        await this.fillData()
+        await this.changeEstBtn(this.est_normal)
+      },
+      changeEstBtn (est_n) {
+        return new Promise(resolve => {
+          this.est_normal = !est_n
+          setTimeout(function() {
+            resolve();
+          }, 10);
+        });
+      },
       fillData () {
         let inputNumData = this.inputData.split(/,|\s/).filter(function(v){return v!=""}).map(Number)
         this.labelData = []
@@ -151,6 +238,12 @@ export default {
             type: "scatter"
           }]
         }
+
+        return new Promise(resolve => {
+          setTimeout(function() {
+            resolve();
+          }, 10);
+        });
       }
     }
 }

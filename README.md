@@ -15,7 +15,7 @@ Matlab code contributed by Shinsuke Koyama (skoyama@ism.ac.jp).
 
 Date of the final revision: 2020/06/28
 
-The analysis was directed by Shigeru Shinomoto (shinomoto.shigeru.6e@kyoto-u.ac.jp)
+The analysis was directed by Shigeru Shinomoto (shigerushinomoto@gmail.com)
 
 ## Reference
 Shinsuke Koyama, Taiki Horie, and Shigeru Shinomoto, 
